@@ -137,7 +137,7 @@ def event_to_item(event, cal):
         item['latlon'] = "{},{}".format(lat, lon)
         print item['latlon']
         country = loc_to_country(item['latlon'])
-        item['country'] = contry
+        item['country'] = country
     return item
 
 
@@ -159,14 +159,34 @@ if __name__ == '__main__':
     events = calendar_events(service, cal_id_python_events)
 
     for event in events:
-        items.append(event_to_item(event, 'pe'))
+        items.append(event_to_item(event, 'Larger'))
 
     events = calendar_events(service, cal_id_user_group)
 
     for event in events:
-        items.append(event_to_item(event, 'ug'))
+        items.append(event_to_item(event, 'Smaller'))
 
     geocache.sync()
     geocache.close()
 
-    json.dump(items, open('events_python.json', 'w'))
+
+    metadata = {"properties": {
+        "url": {
+            "valueType": "url"
+        },
+        "start": {
+            "valueType": "date"
+        },
+        "end": {
+            "valueType": "date"
+        }
+    },
+    "types": {
+        "Item": {
+            "pluralLabel": "events",
+            "label": "event"
+        }
+    }}
+    data = {'items': items}
+    data.update(metadata)
+    json.dump(data, open('events_python.json', 'w'))
