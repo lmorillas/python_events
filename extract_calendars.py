@@ -28,14 +28,15 @@ __author__ = 'morillas@google.com (Luis Miguel Morillas)'
 import httplib2
 import pprint
 import sys
+import datetime
 
 from googleapiclient.discovery import build
 from oauth2client.client import SignedJwtAssertionCredentials, AccessTokenRefreshError
 
 from geopy import geocoders
-google = geocoders.GoogleV3()
-yandex = geocoders.Yandex()
-nom = geocoders.Nominatim()
+google = geocoders.GoogleV3(timeout=5)
+yandex = geocoders.Yandex(timeout=5)
+nom = geocoders.Nominatim(timeout=5)
 
 
 import shelve
@@ -80,7 +81,6 @@ def calendar_events(service, cal_id):
             page_token = event_list.get('nextPageToken')
             if not page_token:
                 break
-
     except AccessTokenRefreshError:
         print ('The credentials have been revoked or expired, please re-run'
           'the application to re-authorize.')
@@ -89,9 +89,14 @@ def calendar_events(service, cal_id):
 
 def geolocate(address):
     global geocache
-    address = address.encode('utf-8')
+    address = address.encode('utf-8')  # for storing in shelve
+    loc = None
     if address not in geocache.keys():
-        loc = google.geocode(address)
+        print 'Searching ', address
+        try:
+            loc = google.geocode(address)
+        except:
+            pass
         if not loc:
             try:
                 loc = yandex.geocode(address)
@@ -110,9 +115,19 @@ def geolocate(address):
     return loc
 
 def loc_to_country(latlon):
-    loc = nom.reverse(latlon)
-    if loc:
-        return loc.raw.get('address').get('country')
+    global geocache
+    if latlon not in geocache.keys():
+        print 'Searching country of ', latlon
+        try:
+            loc = nom.reverse(latlon)
+            if loc:
+                country = loc.raw.get('address').get('country')
+                geocache[latlon] = country
+                return country
+        except:
+            return ''
+    else:
+        return geocache.get(latlon)
 
 
 def event_to_item(event, cal):
@@ -140,6 +155,13 @@ def event_to_item(event, cal):
         item['country'] = country
     return item
 
+def create_index():
+    import pytz
+    now = datetime.datetime.now(pytz.utc)
+    format = "%Y-%m-%d %H:%M %Z"
+
+    template = open('index.templ').read()
+    open('index.html', 'w').write(template.format(datetime=now.strftime(format)))
 
 
 if __name__ == '__main__':
@@ -190,3 +212,7 @@ if __name__ == '__main__':
     data = {'items': items}
     data.update(metadata)
     json.dump(data, open('events_python.json', 'w'))
+
+    create_index()
+
+
