@@ -5,6 +5,12 @@
     <meta charset="utf-8">
     <title>Python Events</title>
 
+
+    <!-- metadata -->
+    <meta name="description" content="Python events geolocated and in timeline">
+    <meta name="og:description" content="Python events geolocated and in timeline">
+    <meta name="keywords" content="Python events geolocation map programming language object oriented web free open source software license documentation download community">
+
     <!-- Datos + importadores -->
     <link href="events_python.json" type="application/json" rel="exhibit-data" />
 
@@ -22,9 +28,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.0/css/bootstrap-theme.min.css">
     <script src="https://cdn.jsdelivr.net/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
-    <!-- css particular
-    <link rel="stylesheet" href="css/custom.css">
--->
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -35,6 +38,10 @@
     .exhibit-facet-value {
         font-size: smaller;
     }
+
+    div.exhibit-legendWidget > div.exhibit-color-legend > div > div > span.label {
+           color: black;
+    }
     </style>
 
     <script type="text/javascript">
@@ -43,23 +50,14 @@
     });
     </script>
 </head>
-
 <body>
 
-    <!-- COLECCIONES -->
-    <!--
-    <div data-ex-role="collection" data-ex-item-types="centro" id="col_centros"></div>
-    <div data-ex-role="collection" data-ex-item-types="proyecto_innova" id="col_proyectos">
-    </div>
--->
 
     <div class="container-fluid">
-
-
         <div class="col-xs-8 center-block" style="float:none;">
             <center>
                 <h1>Python Events</h1>
-                <p>Data extracted from the <a href="https://wiki.python.org/moin/PythonEventsCalendar">Python Calendars</a> :: Updated: 2015-01-27 23:12 UTC</p>
+                <p>Data extracted from the <a href="https://wiki.python.org/moin/PythonEventsCalendar">Python Calendars</a> :: 2015-01-28 08:33 UTC</p>
             </center>
         </div>
 
@@ -70,9 +68,6 @@
                 </div>
 
                 <div data-ex-role="exhibit-facet" data-ex-expression=".country" data-ex-facet-label="Country" data-ex-show-missing="false" data-ex-scroll="true" data-ex-height="24em" data-ex-sort-mode="count"></div>
-
-
-
             </div>
 
             <div class="col-md-9" <div data-ex-role="exhibit-viewPanel">
@@ -106,7 +101,7 @@
                 </div>
 
 
-                <div data-ex-role="view" data-ex-view-class="Map" data-ex-label="Map" data-ex-latlng=".latlon" data-ex-map-height="480" data-ex-show-tool-box="true" data-ex-color-key=".cal" data-ex-color-legend-label="From Calendar" >
+                <div data-ex-role="view" data-ex-view-class="Map" data-ex-label="Map" data-ex-latlng=".latlon" data-ex-map-height="480" data-ex-show-tool-box="true" data-ex-color-key=".cal" data-ex-color-legend-label="Python Calendar" >
                 </div>
 
 
