@@ -28,9 +28,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.0/css/bootstrap-theme.min.css">
     <script src="https://cdn.jsdelivr.net/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
-    <!-- css particular
-    <link rel="stylesheet" href="css/custom.css">
--->
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -40,6 +37,10 @@
     }}
     .exhibit-facet-value {{
         font-size: smaller;
+    }}
+
+    div.exhibit-legendWidget > div.exhibit-color-legend > div > div > span.label {{
+           color: black;
     }}
     </style>
 
@@ -52,12 +53,6 @@
 
 <body>
 
-    <!-- COLECCIONES -->
-    <!--
-    <div data-ex-role="collection" data-ex-item-types="centro" id="col_centros"></div>
-    <div data-ex-role="collection" data-ex-item-types="proyecto_innova" id="col_proyectos">
-    </div>
--->
 
     <div class="container-fluid">
 
@@ -65,7 +60,7 @@
         <div class="col-xs-8 center-block" style="float:none;">
             <center>
                 <h1>Python Events</h1>
-                <p>Data extracted from the <a href="https://wiki.python.org/moin/PythonEventsCalendar">Python Calendars</a> :: Updated: {datetime}</p>
+                <p>Data extracted from the <a href="https://wiki.python.org/moin/PythonEventsCalendar">Python Calendars</a> :: {datetime}</p>
             </center>
         </div>
 
@@ -112,7 +107,7 @@
                 </div>
 
 
-                <div data-ex-role="view" data-ex-view-class="Map" data-ex-label="Map" data-ex-latlng=".latlon" data-ex-map-height="480" data-ex-show-tool-box="true" data-ex-color-key=".cal" data-ex-color-legend-label="From Calendar" >
+                <div data-ex-role="view" data-ex-view-class="Map" data-ex-label="Map" data-ex-latlng=".latlon" data-ex-map-height="480" data-ex-show-tool-box="true" data-ex-color-key=".cal" data-ex-color-legend-label="Python Calendar" >
                 </div>
 
 
