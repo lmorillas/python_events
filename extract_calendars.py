@@ -58,7 +58,6 @@ def connect_calendar():
           key,
           scope=['https://www.googleapis.com/auth/calendar',
                'https://www.googleapis.com/auth/calendar.readonly'])
-
     http = httplib2.Http()
     http = credentials.authorize(http)
 
@@ -67,16 +66,28 @@ def connect_calendar():
 
     return service
 
-def calendar_events(service, cal_id):
+def get_month(date_str):
+    '''
+    returns start month str from event
+    '''
+    return datetime.datetime.strptime(date_str[:10], '%Y-%m-%d').strftime("%B")
+
+
+def calendar_events(service, cal_id, singleEvents="False"):
     # Today: only envents present and future
     timeMin = datetime.datetime.now().strftime('%Y-%m-%dT00:00:00.000Z')
-
+    if singleEvents != "False":
+        timeMax = '{}-12-31T23:00:00.000Z'.format(datetime.datetime.now().year)
+    else:
+        timeMax = None
+    #timeMin = datetime.datetime.now().isoformat()
     events = []
     try:
         page_token = None
         while True:
-            event_list = service.events().list(calendarId=cal_id, pageToken=page_token,
-                    timeMin=timeMin).execute()
+            event_list = service.events().list(singleEvents=singleEvents,orderBy='startTime', calendarId=cal_id,
+                    pageToken=page_token, timeMin=timeMin,
+                    timeMax=timeMax).execute()
             events.extend([event for event in event_list['items']])
             page_token = event_list.get('nextPageToken')
             if not page_token:
@@ -144,6 +155,7 @@ def event_to_item(event, cal):
     item['label'] = event.get('summary')
     item['url'] = event.get('htmlLink')
     item['cal'] = cal
+    item['month'] = get_month(item.get('start'))
     address = event.get('location')
     location = geolocate(address)
     if location:
@@ -183,7 +195,7 @@ if __name__ == '__main__':
     for event in events:
         items.append(event_to_item(event, 'Larger'))
 
-    events = calendar_events(service, cal_id_user_group)
+    events = calendar_events(service, cal_id_user_group, singleEvents="True")
 
     for event in events:
         items.append(event_to_item(event, 'Smaller'))
@@ -201,7 +213,12 @@ if __name__ == '__main__':
         },
         "end": {
             "valueType": "date"
-        }
+        },
+        "month": {
+            "valueType": "date"
+        },
+
+
     },
     "types": {
         "Item": {
@@ -214,5 +231,4 @@ if __name__ == '__main__':
     json.dump(data, open('events_python.json', 'w'))
 
     create_index()
-
 
