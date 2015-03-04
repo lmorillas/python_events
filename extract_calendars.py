@@ -29,6 +29,9 @@ import httplib2
 import pprint
 import sys
 import datetime
+from operator import itemgetter
+from itertools import groupby
+
 
 from googleapiclient.discovery import build
 from oauth2client.client import SignedJwtAssertionCredentials, AccessTokenRefreshError
@@ -82,12 +85,14 @@ def calendar_events(service, cal_id, singleEvents="False"):
         timeMax = None
     #timeMin = datetime.datetime.now().isoformat()
     events = []
+
     try:
         page_token = None
         while True:
+
             event_list = service.events().list(singleEvents=singleEvents,orderBy='startTime', calendarId=cal_id,
-                    pageToken=page_token, timeMin=timeMin,
-                    timeMax=timeMax).execute()
+                    pageToken=page_token, timeMin=timeMin, timeMax=timeMax).execute()
+
             events.extend([event for event in event_list['items']])
             page_token = event_list.get('nextPageToken')
             if not page_token:
@@ -175,6 +180,24 @@ def create_index():
     template = open('index.templ').read()
     open('index.html', 'w').write(template.format(datetime=now.strftime(format)))
 
+def select_first_event(eventlist):
+    '''select only the first enven when repeated events'''
+
+    recurring = itemgetter('recurringEventId')
+    def _date(x):
+        return x.get('start').get('dateTime')
+
+    eventlist.sort(key=recurring)
+    _non_repeated = []
+    for ev, recur in groupby(eventlist, key=recurring):
+        recur = sorted(recur, key=_date)
+        _non_repeated.append(recur[0])  # only add the first
+
+    return _non_repeated
+
+
+
+
 
 if __name__ == '__main__':
     import datetime
@@ -195,10 +218,13 @@ if __name__ == '__main__':
     for event in events:
         items.append(event_to_item(event, 'Larger'))
 
+
     events = calendar_events(service, cal_id_user_group, singleEvents="True")
 
+    events = select_first_event(events)
     for event in events:
         items.append(event_to_item(event, 'Smaller'))
+
 
     geocache.sync()
     geocache.close()
