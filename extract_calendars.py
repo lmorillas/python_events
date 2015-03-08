@@ -183,7 +183,12 @@ def create_index():
 def select_first_event(eventlist):
     '''select only the first enven when repeated events'''
 
-    recurring = itemgetter('recurringEventId')
+    def sort_by_eventID(element):
+        return element.get('recurringEventId')
+    #recurring = itemgetter('recurringEventId')    # keyerror ?
+
+    recurring = sort_by_eventID
+
     def _date(x):
         return x.get('start').get('dateTime')
 
