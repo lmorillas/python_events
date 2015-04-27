@@ -185,7 +185,7 @@ def select_first_event(eventlist):
     '''select only the first enven when repeated events'''
 
     def sort_by_eventID(element):
-        return element.get('recurringEventId', element.get('id'))
+        return element.get('recurringEventId', element.get('summary'))
 
     #recurring = itemgetter('recurringEventId')    # keyerror ?
 
