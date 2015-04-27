@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright 2015 @lmorillas. All Rights Reserved.
