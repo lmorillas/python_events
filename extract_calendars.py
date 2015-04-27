@@ -157,6 +157,7 @@ def event_to_item(event, cal):
     item['end'] = event.get('end').get('date')
     if not item['end']:
         item['end'] = event.get('end').get('dateTime')
+
     item['label'] = event.get('summary')
     item['url'] = event.get('htmlLink')
     item['cal'] = cal
@@ -184,7 +185,8 @@ def select_first_event(eventlist):
     '''select only the first enven when repeated events'''
 
     def sort_by_eventID(element):
-        return element.get('recurringEventId')
+        return element.get('recurringEventId', element.get('id'))
+
     #recurring = itemgetter('recurringEventId')    # keyerror ?
 
     recurring = sort_by_eventID
@@ -197,7 +199,6 @@ def select_first_event(eventlist):
     for ev, recur in groupby(eventlist, key=recurring):
         recur = sorted(recur, key=_date)
         _non_repeated.append(recur[0])  # only add the first
-
     return _non_repeated
 
 
