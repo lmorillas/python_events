@@ -163,14 +163,15 @@ def event_to_item(event, cal):
     item['cal'] = cal
     item['month'] = get_month(item.get('start'))
     address = event.get('location')
-    location = geolocate(address)
-    if location:
-        lat = location[0]
-        lon = location[1]
-        item['latlon'] = "{},{}".format(lat, lon)
-        print item['latlon']
-        country = loc_to_country(item['latlon'])
-        item['country'] = country
+    if address:
+        location = geolocate(address)
+        if location:
+            lat = location[0]
+            lon = location[1]
+            item['latlon'] = "{},{}".format(lat, lon)
+            print item['latlon']
+            country = loc_to_country(item['latlon'])
+            item['country'] = country
     return item
 
 def create_index():
