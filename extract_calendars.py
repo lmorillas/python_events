@@ -47,7 +47,7 @@ import shelve
 
 
 # Credentials for Service Accout
-EMAIL_CLIENT = '696801545616-44i6o78jdoa7me4lr416n1d5rniidmns@developer.gserviceaccount.com'
+EMAIL_CLIENT = '504559066857-compute@developer.gserviceaccount.com'
 FILE_KEY = 'pycal.p12'
 
 def connect_calendar():
