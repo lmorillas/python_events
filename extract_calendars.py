@@ -212,7 +212,7 @@ if __name__ == '__main__':
 
     geocache = shelve.open('geocache.dat')
 
-
+"""
     # Cals IDs from https://wiki.python.org/moin/PythonEventsCalendar
     cal_id_python_events = 'j7gov1cmnqr9tvg14k621j7t5c@group.calendar.google.com'
     cal_id_user_group = '3haig2m9msslkpf2tn1h56nn9g@group.calendar.google.com'
@@ -264,4 +264,4 @@ if __name__ == '__main__':
     json.dump(data, open('events_python.json', 'w'))
 
     create_index()
-
+"""
