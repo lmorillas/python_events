@@ -41,19 +41,19 @@
     div.exhibit-legendWidget > div.exhibit-color-legend > div > div > span.label {{
            color: black;
     }}
-    #mapa{
+    #mapa{{
           display: block;
           filter: blur(5px);
           -webkit-filter: blur(5px);
          padding-top: 80px;
-    }
+    }}
     </style>
 
     <script type="text/javascript">
-    $(document).bind("exhibitConfigured.exhibit", function() {
+    $(document).bind("exhibitConfigured.exhibit", function() {{
         $("#mapa").hide();
         $("input").addClass("form-control");
-    });
+    }});
     </script>
 </head>
 <body>
@@ -83,7 +83,7 @@
             </div>
 
             <div class="col-md-9">
-              <div id="mapa"><img src="mapa.png" class="img-responsive"></div>
+                <div id="mapa"><img src="mapa.png" class="img-responsive"></div>
               <div data-ex-role="exhibit-viewPanel">
 
                 <div data-ex-role="lens" class="a-lens" style="display: none;">
