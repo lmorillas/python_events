@@ -53,7 +53,7 @@ FILE_KEY = 'pycal.p12'
 def connect_calendar():
     # Load the key in PKCS 12 format that you downloaded from the Google API
     # Console when you created your Service account.
-    f = file(FILE_KEY, 'rb')
+    f = open(FILE_KEY, 'rb')
     key = f.read()
     f.close()
 
@@ -105,10 +105,10 @@ def calendar_events(service, cal_id, singleEvents="False"):
 
 def geolocate(address):
     global geocache
-    address = address.encode('utf-8')  # for storing in shelve
+    #address = address.encode('utf-8')  # for storing in shelve
     loc = None
     if address not in geocache.keys():
-        print 'Searching ', address
+        print ('Searching ', address)
         try:
             loc = google.geocode(address)
         except:
@@ -133,7 +133,7 @@ def geolocate(address):
 def loc_to_country(latlon):
     global geocache
     if latlon not in geocache.keys():
-        print 'Searching country of ', latlon
+        print ('Searching country of ', latlon)
         try:
             loc = nom.reverse(latlon)
             if loc:
@@ -147,7 +147,7 @@ def loc_to_country(latlon):
 
 
 def event_to_item(event, cal):
-    print event.get('summary').encode('utf-8'), ' --> ' ,
+    print (event.get('summary').encode('utf-8'), ' --> ' )
     item = {}
     item['description'] = event.get('description')
     item['id'] = event.get('id')
@@ -169,7 +169,7 @@ def event_to_item(event, cal):
             lat = location[0]
             lon = location[1]
             item['latlon'] = "{},{}".format(lat, lon)
-            print item['latlon']
+            print (item['latlon'])
             country = loc_to_country(item['latlon'])
             item['country'] = country
     return item
@@ -177,10 +177,10 @@ def event_to_item(event, cal):
 def create_index():
     import pytz
     now = datetime.datetime.now(pytz.utc)
-    format = "%Y-%m-%d %H:%M %Z"
+    format = "%Y-%m-%d" # "%Y-%m-%d %H:%M %Z"
 
     template = open('index.templ').read()
-    open('index.html', 'w').write(template.format(datetime=now.strftime(format)))
+    open('docs/index.html', 'w').write(template.format(datetime=now.strftime(format)))
 
 def select_first_event(eventlist):
     '''select only the first enven when repeated events'''
@@ -222,10 +222,11 @@ if __name__ == '__main__':
     service = connect_calendar()
     events = calendar_events(service, cal_id_python_events)
 
+    
     for event in events:
         items.append(event_to_item(event, 'Larger'))
 
-
+    
     events = calendar_events(service, cal_id_user_group, singleEvents="True")
 
     events = select_first_event(events)
@@ -261,6 +262,7 @@ if __name__ == '__main__':
     }}
     data = {'items': items}
     data.update(metadata)
-    json.dump(data, open('events_python.json', 'w'))
+    json.dump(data, open('docs/events_python.json', 'w'))
 
     create_index()
+    
