@@ -262,8 +262,8 @@ if __name__ == '__main__':
         }
     }}
     data = {'items': items}
-    data.update(metadata)
+    #data.update(metadata)
     #json.dump(data, open('docs/events_python.json', 'w'))
 
-    create_index(data)
+    create_index(data, metadata)
     
