@@ -176,12 +176,15 @@ def event_to_item(event, cal):
 
 def create_index(data="", schema = ""):
     import pytz
+    #data = json.dumps(data)
+    data = json.JSONEncoderForHTML().encode(data)
+    schema = json.dumps(schema)
     now = datetime.datetime.now(pytz.utc)
     format = "%Y-%m-%d" # "%Y-%m-%d %H:%M %Z"
-
+    
     template = open('index.templ').read()
-    open('docs/index.html', 'w').write(template.format(datetime=now.strftime(format)),
-            data=data, schema=schema )
+    open('docs/index.html', 'w').write(template.format(datetime=now.strftime(format),
+            data=data, schema=schema ))
 
 def select_first_event(eventlist):
     '''select only the first enven when repeated events'''
@@ -199,8 +202,11 @@ def select_first_event(eventlist):
     eventlist.sort(key=recurring)
     _non_repeated = []
     for ev, recur in groupby(eventlist, key=recurring):
-        recur = sorted(recur, key=_date)
-        _non_repeated.append(recur[0])  # only add the first
+        try:
+            recur = sorted(recur, key=_date)
+            _non_repeated.append(recur[0])  # only add the first
+        except:
+            print ('recur error -> ', [x for x in recur])
     return _non_repeated
 
 
@@ -209,7 +215,7 @@ def select_first_event(eventlist):
 
 if __name__ == '__main__':
     import datetime
-    import json
+    import simplejson as json
 
     geocache = shelve.open('geocache.dat')
 
@@ -239,7 +245,7 @@ if __name__ == '__main__':
     geocache.close()
 
 
-    metadata = {"properties": {
+    schema = {"properties": {
         "url": {
             "valueType": "url"
         },
@@ -265,5 +271,5 @@ if __name__ == '__main__':
     #data.update(metadata)
     #json.dump(data, open('docs/events_python.json', 'w'))
 
-    create_index(data, metadata)
+    create_index(data, schema)
     
