@@ -174,14 +174,14 @@ def event_to_item(event, cal):
             item['country'] = country
     return item
 
-def create_index(data=None):
+def create_index(data="", schema = ""):
     import pytz
     now = datetime.datetime.now(pytz.utc)
     format = "%Y-%m-%d" # "%Y-%m-%d %H:%M %Z"
 
     template = open('index.templ').read()
     open('docs/index.html', 'w').write(template.format(datetime=now.strftime(format)),
-            data=data )
+            data=data, schema=schema )
 
 def select_first_event(eventlist):
     '''select only the first enven when repeated events'''
