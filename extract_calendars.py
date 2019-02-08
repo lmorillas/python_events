@@ -147,7 +147,10 @@ def loc_to_country(latlon):
 
 
 def event_to_item(event, cal):
-    print (event.get('summary').encode('utf-8'), ' --> ' )
+    if event.get('summary'):
+        print (event.get('summary').encode('utf-8'), ' --> ' )
+    else:
+        print('No summary ? ', event)
     item = {}
     item['description'] = event.get('description')
     item['id'] = event.get('id')
