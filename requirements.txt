@@ -25,7 +25,7 @@ pyasn1==0.4.3
 pyasn1-modules==0.2.1
 pycparser==2.19
 pycrypto==2.6.1
-Pygments==2.2.0
+Pygments==2.7.4
 pyOpenSSL==19.0.0
 pytz==2018.4
 rsa==3.4.2
