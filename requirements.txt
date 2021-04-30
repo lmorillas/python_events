@@ -28,7 +28,7 @@ pycrypto==2.6.1
 Pygments==2.2.0
 pyOpenSSL==19.0.0
 pytz==2018.4
-rsa==3.4.2
+rsa==4.7
 simplegeneric==0.8.1
 simplejson==3.16.0
 six==1.12.0
