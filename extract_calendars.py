@@ -228,7 +228,7 @@ if __name__ == '__main__':
     cal_id_user_group = '3haig2m9msslkpf2tn1h56nn9g@group.calendar.google.com'
 
     items = []
-
+'''
     service = connect_calendar()
     events = calendar_events(service, cal_id_python_events)
 
@@ -275,4 +275,4 @@ if __name__ == '__main__':
     #json.dump(data, open('docs/events_python.json', 'w'))
 
     create_index(data, schema)
-    
+'''
