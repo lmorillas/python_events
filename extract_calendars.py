@@ -23,6 +23,7 @@ by jcgregorio@google.com
 
 """
 
+
 __author__ = 'morillas@google.com (Luis Miguel Morillas)'
 
 import httplib2
@@ -32,12 +33,24 @@ import datetime
 from operator import itemgetter
 from itertools import groupby
 
+import dotenv
+import os
+from bs4 import BeautifulSoup
+
+
+
+dotenv.load_dotenv()
+
+apik = os.getenv('apik')
+
+
 
 from googleapiclient.discovery import build
 from oauth2client.client import SignedJwtAssertionCredentials, AccessTokenRefreshError
 
 from geopy import geocoders
-google = geocoders.GoogleV3(timeout=5)
+
+google = geocoders.GoogleV3(api_key=apik, timeout=5)
 yandex = geocoders.Yandex(timeout=5)
 nom = geocoders.Nominatim(timeout=5)
 
@@ -166,6 +179,12 @@ def event_to_item(event, cal):
     item['cal'] = cal
     item['month'] = get_month(item.get('start'))
     address = event.get('location')
+    if not address:
+        address = event.get('description')
+        if address:
+            address = BeautifulSoup(address, 'lxml').text
+        else:
+            print(event)
     if address:
         location = geolocate(address)
         if location:
@@ -228,7 +247,7 @@ if __name__ == '__main__':
     cal_id_user_group = '3haig2m9msslkpf2tn1h56nn9g@group.calendar.google.com'
 
     items = []
-'''
+
     service = connect_calendar()
     events = calendar_events(service, cal_id_python_events)
 
@@ -275,4 +294,3 @@ if __name__ == '__main__':
     #json.dump(data, open('docs/events_python.json', 'w'))
 
     create_index(data, schema)
-'''
