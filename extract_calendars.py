@@ -194,6 +194,10 @@ def event_to_item(event, cal):
             print (item['latlon'])
             country = loc_to_country(item['latlon'])
             item['country'] = country
+        else:
+            print('ERROR geolocating ', address)
+    else:
+        print('No address in event', event)
     return item
 
 def create_index(data="", schema = ""):
